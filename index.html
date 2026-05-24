@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WORKinc — Bill Automation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #0a0f1e;
+      color: #e8eaf6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      background: rgba(10,15,30,0.95);
+      z-index: 100;
+    }
+
+    .logo {
+      font-weight: 900;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .logo span { color: #4ade80; }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    .nav-btns { display: flex; gap: 0.75rem; }
+
+    .btn-ghost {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: rgba(255,255,255,0.8);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.06); }
+
+    .btn-green {
+      padding: 0.5rem 1.25rem;
+      background: #4ade80;
+      color: #0a0f1e;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-green:hover { background: #86efac; }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 2.5rem 3rem;
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.4rem 1rem;
+      background: rgba(74,222,128,0.1);
+      border: 1px solid rgba(74,222,128,0.3);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      color: #4ade80;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: #4ade80;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero {
+      padding: 0.9rem 2rem;
+      background: #4ade80;
+      color: #0a0f1e;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-hero:hover { background: #86efac; transform: translateY(-2px); }
+
+    .btn-hero-outline {
+      padding: 0.9rem 2rem;
+      background: transparent;
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-hero-outline:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+
+    /* MOCKUP */
+    .mockup-wrap {
+      max-width: 860px;
+      margin: 3rem auto;
+      padding: 0 2.5rem;
+    }
+
+    .mockup {
+      background: #0f1629;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .mockup-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.875rem 1.25rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #28c840; }
+
+    .mockup-url {
+      flex: 1;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.25);
+      font-family: monospace;
+    }
+
+    .dash {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      min-height: 360px;
+    }
+
+    .sidebar {
+      background: rgba(255,255,255,0.02);
+      border-right: 1px solid rgba(255,255,255,0.07);
+      padding: 1.25rem;
+    }
+
+    .sidebar-logo {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .sidebar-logo span { color: #4ade80; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 2px;
+      cursor: pointer;
+    }
+    .nav-item.active { background: rgba(74,222,128,0.1); color: #4ade80; }
+    .nav-item:hover:not(.active) { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.8); }
+
+    .nav-icon { font-size: 16px; }
+
+    .dash-main { padding: 1.5rem; }
+
+    .dash-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 0.875rem 1rem;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 4px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-sub { font-size: 0.7rem; color: #4ade80; margin-top: 2px; }
+
+    .bills-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .bill-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0.875rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      margin-bottom: 0.375rem;
+    }
+
+    .bill-left { display: flex; align-items: center; gap: 10px; }
+
+    .bill-icon {
+      width: 30px; height: 30px;
+      background: rgba(74,222,128,0.12);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .bill-name { font-size: 0.8rem; color: rgba(255,255,255,0.85); }
+    .bill-date { font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 1px; }
+    .bill-amount { font-size: 0.85rem; font-weight: 600; color: #fff; }
+
+    .pill {
+      font-size: 0.62rem;
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-weight: 600;
+      margin-top: 3px;
+      display: inline-block;
+    }
+    .pill-green { background: rgba(74,222,128,0.1); color: #4ade80; }
+    .pill-yellow { background: rgba(250,204,21,0.1); color: #facc15; }
+
+    /* FEATURES */
+    .features {
+      padding: 4rem 2.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #4ade80;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      text-align: center;
+      letter-spacing: -0.03em;
+      margin-bottom: 2.5rem;
+      line-height: 1.2;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: rgba(74,222,128,0.35); }
+
+    .card-icon {
+      width: 42px; height: 42px;
+      background: rgba(74,222,128,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+    }
+
+    /* SIGNIN */
+    .signin-wrap {
+      padding: 3rem 2.5rem 5rem;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .signin-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .signin-card h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .signin-card > p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1.75rem;
+    }
+
+    .field { margin-bottom: 1rem; text-align: left; }
+
+    .field label {
+      display: block;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 6px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .field input:focus { border-color: rgba(74,222,128,0.5); }
+    .field input::placeholder { color: rgba(255,255,255,0.2); }
+
+    .btn-signin {
+      width: 100%;
+      padding: 0.85rem;
+      background: #4ade80;
+      color: #0a0f1e;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .btn-signin:hover { background: #86efac; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 1.25rem 0;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+    }
+    .divider span { font-size: 0.75rem; color: rgba(255,255,255,0.25); }
+
+    .btn-google {
+      width: 100%;
+      padding: 0.75rem;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.875rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .btn-google:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+
+    .signup-link {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      margin-top: 1.25rem;
+    }
+    .signup-link a { color: #4ade80; text-decoration: none; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo { font-size: 0.9rem; font-weight: 800; color: rgba(255,255,255,0.35); }
+    .footer-logo span { color: #4ade80; }
+    footer p { font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 2.2rem; }
+      .cards { grid-template-columns: 1fr; }
+      .dash { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      nav { padding: 1rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">WORK<span>inc</span></div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#features">How it works</a></li>
+      <li><a href="#signin">Pricing</a></li>
+      <li><a href="#signin">Docs</a></li>
+    </ul>
+    <div class="nav-btns">
+      <button class="btn-ghost" onclick="document.getElementById('signin').scrollIntoView({behavior:'smooth'})">Sign in</button>
+      <button class="btn-green" onclick="document.getElementById('signin').scrollIntoView({behavior:'smooth'})">Get started</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="badge"><span class="badge-dot"></span> Bill automation platform</div>
+    <h1>Pay every bill.<br><em>Automatically.</em><br>Always on time.</h1>
+    <p>WORKinc connects to your accounts and handles recurring payments so you never miss a due date or waste time doing it manually.</p>
+    <div class="hero-btns">
+      <button class="btn-hero" onclick="document.getElementById('signin').scrollIntoView({behavior:'smooth'})">⚡ Start automating</button>
+      <button class="btn-hero-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">See how it works</button>
+    </div>
+  </section>
+
+  <div class="mockup-wrap">
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <div class="mockup-url">app.workinc.io/dashboard</div>
+      </div>
+      <div class="dash">
+        <div class="sidebar">
+          <div class="sidebar-logo">WORK<span>inc</span></div>
+          <div class="nav-item active"><span class="nav-icon">▦</span> Dashboard</div>
+          <div class="nav-item"><span class="nav-icon">↻</span> Auto-pay</div>
+          <div class="nav-item"><span class="nav-icon">▤</span> Schedule</div>
+          <div class="nav-item"><span class="nav-icon">↗</span> Analytics</div>
+          <div class="nav-item"><span class="nav-icon">⚙</span> Settings</div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-title">Your bills, automated</div>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">This month</div>
+              <div class="stat-val">₹12,400</div>
+              <div class="stat-sub">↑ 3 auto-paid</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Upcoming</div>
+              <div class="stat-val">₹4,200</div>
+              <div class="stat-sub">in 5 days</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Saved time</div>
+              <div class="stat-val">2.4 hrs</div>
+              <div class="stat-sub">this month</div>
+            </div>
+          </div>
+          <div class="bills-title">Active pipelines</div>
+          <div class="bill-row">
+            <div class="bill-left">
+              <div class="bill-icon">⚡</div>
+              <div>
+                <div class="bill-name">Electricity — TPCODL</div>
+                <div class="bill-date">Due May 28</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="bill-amount">₹1,840</div>
+              <span class="pill pill-green">Auto-pay</span>
+            </div>
+          </div>
+          <div class="bill-row">
+            <div class="bill-left">
+              <div class="bill-icon">📡</div>
+              <div>
+                <div class="bill-name">Broadband — Airtel</div>
+                <div class="bill-date">Due Jun 1</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="bill-amount">₹999</div>
+              <span class="pill pill-green">Auto-pay</span>
+            </div>
+          </div>
+          <div class="bill-row">
+            <div class="bill-left">
+              <div class="bill-icon" style="background:rgba(250,204,21,0.1);">💧</div>
+              <div>
+                <div class="bill-name">Water — BWSSB</div>
+                <div class="bill-date">Due Jun 5</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="bill-amount">₹420</div>
+              <span class="pill pill-yellow">Pending setup</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="features" id="features">
+    <div class="section-tag">Why WORKinc</div>
+    <div class="section-title">Built for bill automation,<br>nothing else.</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3>Smart pipelines</h3>
+        <p>Set up once. WORKinc detects due dates and triggers payments automatically every cycle.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔔</div>
+        <h3>Pre-payment alerts</h3>
+        <p>Get notified 3 days before any payment so you always have time to review or pause.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>Sandbox safe</h3>
+        <p>Test your entire payment flow with fake credentials before going live. No real money touched.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Spending analytics</h3>
+        <p>See exactly where your money goes each month with category breakdowns and trends.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💳</div>
+        <h3>Stripe integration</h3>
+        <p>Connected to Stripe's trusted payment infrastructure with full sandbox test support.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <h3>Secure by default</h3>
+        <p>All credentials encrypted at rest. No plaintext secrets. OAuth-based bank connections.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="signin-wrap" id="signin">
+    <div class="signin-card">
+      <h2>Welcome to WORKinc</h2>
+      <p>Sign in to start automating your bills</p>
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••" />
+      </div>
+      <button class="btn-signin" onclick="this.textContent='Signing in…'">Sign in</button>
+      <div class="divider"><span>or</span></div>
+      <button class="btn-google">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+      <div class="signup-link">No account yet? <a href="#">Create one free</a></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">WORK<span>inc</span></div>
+    <p>© 2026 WORKinc. Built for India. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
