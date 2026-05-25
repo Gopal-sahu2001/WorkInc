@@ -1026,6 +1026,56 @@
   </footer>
 
   <script>
+    // --- DATABASE & AUTH LOGIC ---
+    async function handleSignin() {
+        const emailField = document.getElementById('email-input').value;
+        const passwordField = document.getElementById('pass-input').value;
+
+        if (!emailField) {
+            alert("Please enter an email address!");
+            return;
+        }
+
+        const dummyName = emailField.split('@')[0]; 
+
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: dummyName,
+                email: emailField
+            })
+        });
+
+        const data = await response.json();
+        alert(data.message);
+    }
+
+    // Capture clicks on the Google button
+    document.addEventListener("DOMContentLoaded", function() {
+        const googleBtn = document.getElementById('google-btn');
+        if(googleBtn) {
+            googleBtn.addEventListener('click', async () => {
+                const googleUser = {
+                    name: "Google Explorer",
+                    email: "google.explorer@gmail.com"
+                };
+
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(googleUser)
+                });
+
+                const data = await response.json();
+                alert(data.message);
+            });
+        }
+    });
     // Sticky nav shadow
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
